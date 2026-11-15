@@ -17,8 +17,9 @@
   --radius: 10px;
   --maxw: 960px;
 }
+/* Dark tokens: follow the OS unless the visitor picked light; or forced dark via the toggle */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0b1422;
     --bg-alt: #101c2e;
     --surface: #13213a;
@@ -32,6 +33,22 @@
     --shadow: none;
   }
 }
+:root[data-theme="dark"] {
+  --bg: #0b1422;
+  --bg-alt: #101c2e;
+  --surface: #13213a;
+  --text: #dfe5ee;
+  --text-muted: #9aa6b8;
+  --border: #22324d;
+  --heading: #f2f4f8;
+  --accent: #cdb26a;
+  --link: #8fb8ee;
+  --nav-bg: rgba(7, 18, 34, 0.97);
+  --shadow: none;
+}
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 /* ---------- Base ---------- */
 * { box-sizing: border-box; }
@@ -61,6 +78,16 @@ img { max-width: 100%; height: auto; display: block; }
 .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; }
 .nav ul a { color: #d7dde6; font-size: .92rem; }
 .nav ul a:hover { color: var(--nd-gold); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.theme-toggle {
+  background: none; border: 1px solid rgba(255,255,255,.35); color: #fff; cursor: pointer;
+  width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; padding: 0;
+}
+.theme-toggle:hover { border-color: var(--nd-gold); color: var(--nd-gold); }
+.theme-toggle svg { width: 17px; height: 17px; fill: currentColor; }
+.theme-toggle .icon-sun { display: none; }
+.dark-active .theme-toggle .icon-sun { display: block; }
+.dark-active .theme-toggle .icon-moon { display: none; }
 .nav-toggle { display: none; background: none; border: 0; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 4px 8px; }
 
 @media (max-width: 760px) {

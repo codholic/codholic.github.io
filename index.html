@@ -10,21 +10,33 @@
   <meta property="og:image" content="https://codholic.github.io/assets/img/profile.jpg">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    /* Apply saved theme before the page paints (avoids a flash) */
+    (function () {
+      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
 <nav class="nav">
   <div class="container">
     <a class="brand" href="#top">Mohammad Redwan Islam</a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">&#9776;</button>
-    <ul id="menu" onclick="this.classList.remove('open')">
-      <li><a href="#about">About</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul id="menu" onclick="this.classList.remove('open')">
+        <li><a href="#about">About</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch dark / light mode" title="Switch dark / light mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">&#9776;</button>
+    </div>
   </div>
 </nav>
 
@@ -261,6 +273,22 @@
 <footer>
   <div class="container">© <span id="y"></span> Mohammad Redwan Islam · Hosted on <a href="https://pages.github.com/">GitHub Pages</a></div>
 </footer>
+<script>
+  /* Dark / light switch: remembers the choice; otherwise follows the OS setting */
+  (function () {
+    var root = document.documentElement, mq = window.matchMedia('(prefers-color-scheme: dark)');
+    function isDark() { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : mq.matches; }
+    function sync() { root.classList.toggle('dark-active', isDark()); }
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+    if (mq.addEventListener) mq.addEventListener('change', sync);
+    sync();
+  })();
+</script>
 <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
